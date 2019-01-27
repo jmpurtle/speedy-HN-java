@@ -1,0 +1,23 @@
+package com.example.demo;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
+@Controller
+public class GreetingController {
+
+    @GetMapping("/greeting")
+    public String greeting(@RequestParam(id="id", required=false, defaultValue="19011301") String id, Model model) {
+        model.addAttribute("id", id);
+
+        String storyDetailURL = "https://hacker-news.firebaseio.com/v0/item/" + id + ".json";
+    	RestTemplate restTemplate = new RestTemplate();
+    	String result = restTemplate.getForObject(storyDetailURL, String.class);
+
+        return "greeting";
+    }
+
+}
