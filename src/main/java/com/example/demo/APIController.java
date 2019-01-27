@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 @Controller
-public class GreetingController {
+public class APIController {
 
 	public String requestStoryDetail(String id) {
 		String storyDetailURL = "https://hacker-news.firebaseio.com/v0/item/" + id + ".json";
@@ -19,13 +19,13 @@ public class GreetingController {
     	return result;
 	}
 
-	@RequestMapping(value="/greeting/{id}", headers="Accept=application/json")
+	@RequestMapping(value="/api/{id}", headers="Accept=application/json")
 	@ResponseBody
 	public String storyDetail(@PathVariable("id") String id) {
 		return requestStoryDetail(id);
 	}
 
-	@RequestMapping("/greeting/{id}")
+	@RequestMapping("/api/{id}")
 	public String index(@PathVariable("id") String id, Model model) {
 		String result = requestStoryDetail(id);
 
