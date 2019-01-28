@@ -23,9 +23,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.storyIds.slice(0,5).map((item, key) =>
-          <HNSummary item={item} key={key} />
-        )}
+        <ol>
+          {this.state.storyIds.slice(0,5).map((item, key) =>
+            <HNSummary item={item} key={key} />
+          )}
+        </ol>
       </div>
     );
   }

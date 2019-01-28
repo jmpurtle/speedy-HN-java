@@ -6,7 +6,14 @@ class HNSummary extends Component {
 		super(props);
 
 		this.state = {
+			by: null,
+			descendants: null,
+			id: null,
+			kids: 0,
+			score: null,
+			time: null,
 			title: null,
+			type: null,
 			url: null
 		}
 	}
@@ -16,7 +23,14 @@ class HNSummary extends Component {
 		fetch("/api/" + this.props.item).then(function(response) {
 			return response.json();
 		}).then((respJson) => {
+			this.setState({by: respJson['by']});
+			this.setState({descendants: respJson['descendants']});
+			this.setState({id: respJson['id']});
+			this.setState({kids: (respJson['kids'] ? respJson['kids'].length : 0)});
+			this.setState({score: respJson['score']});
+			this.setState({time: respJson['time']});
 			this.setState({title: respJson['title']});
+			this.setState({type: respJson['type']});
 			this.setState({url: respJson['url']});
 		});
 
@@ -24,9 +38,14 @@ class HNSummary extends Component {
 
     render() {
         return (
-            <div>
-                <p>{this.state.title} {this.state.url}</p>
-            </div>
+            <li>
+            	<a href="{this.state.url}" target="_blank">
+            		{this.state.title}
+            	</a>
+            	<span>
+					{this.state.score} points by {this.state.by} | {this.state.kids} comments
+            	</span>
+            </li>
         );
     }
 }
