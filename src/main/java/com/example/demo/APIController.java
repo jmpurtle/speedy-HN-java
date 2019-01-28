@@ -6,10 +6,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.ui.Model;
 
 @Controller
 public class APIController {
+
+	public String getTopStories() {
+		String topStoriesUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
+    	RestTemplate restTemplate = new RestTemplate();
+    	String result = restTemplate.getForObject(topStoriesUrl, String.class);
+
+        return result;
+	}
 
 	public String requestStoryDetail(String id) {
 		String storyDetailURL = "https://hacker-news.firebaseio.com/v0/item/" + id + ".json";
@@ -19,26 +26,20 @@ public class APIController {
     	return result;
 	}
 
-	@RequestMapping(value="/api/{id}", headers="Accept=application/json")
+	@RequestMapping("/api/{id}")
 	@ResponseBody
 	public String storyDetail(@PathVariable("id") String id) {
-		return requestStoryDetail(id);
-	}
-
-	@RequestMapping("/api/{id}")
-	public String index(@PathVariable("id") String id, Model model) {
 		String result = requestStoryDetail(id);
 
-		model.addAttribute("result", result);
-		return "greeting";
+		return result;
 	}
 
-	@RequestMapping()
-	public String defaultMethod(Model model) {
-		String result = requestStoryDetail("19011301");
+	@RequestMapping("/api")
+	@ResponseBody
+	public String index() {
+		String result = getTopStories();
 
-		model.addAttribute("result", result);
-		return "greeting";
+		return result;
 	}
 
 }
